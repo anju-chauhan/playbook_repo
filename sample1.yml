@@ -1,10 +1,6 @@
-- name: Deploy Virtual Machine
-  hosts: edge-devices
+- name: Ping all servers
+  hosts: all
+  gather_facts: false
   tasks:
-    - name: Create VM
-      vm_instance:
-        name: new-vm
-        image: ubuntu-20.04
-        memory: 2048
-        vcpus: 2
-        state: present
+    - name: Ping test
+      ansible.builtin.ping:
