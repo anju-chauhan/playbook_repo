@@ -1,0 +1,22 @@
+---
+- name: Install Node.js on EC2 servers
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Download Node.js setup script
+      shell: curl -sL https://deb.nodesource.com/setup_18.x | bash -
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
