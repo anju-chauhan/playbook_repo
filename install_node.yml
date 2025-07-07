@@ -1,30 +1,27 @@
 ---
-- name: Install Node.js on EC2 servers
+- name: Install Node.js on Ubuntu servers
   hosts: all
   become: yes
-
   tasks:
     - name: Update apt cache
       apt:
         update_cache: yes
 
-    - name: Install curl
-      apt:
-        name: curl
-        state: present
-
-    - name: Add Node.js setup script
-      shell: curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-
-    - name: Install Node.js
+    - name: Install Node.js and npm
       apt:
         name: nodejs
         state: present
 
-    - name: Check Node.js version
+    - name: Install npm
+      apt:
+        name: npm
+        state: present
+
+    - name: Verify Node.js installation
       command: node -v
       register: node_version
+      changed_when: false
 
-    - name: Show installed Node.js version
+    - name: Show Node version
       debug:
         var: node_version.stdout
