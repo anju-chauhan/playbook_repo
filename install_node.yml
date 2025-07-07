@@ -1,13 +1,14 @@
 ---
-- name: Install Node.js on Ubuntu servers
+- name: Install Node.js on Ubuntu
   hosts: all
-  become: yes
+  become: true
+
   tasks:
     - name: Update apt cache
       apt:
         update_cache: yes
 
-    - name: Install Node.js and npm
+    - name: Install Node.js
       apt:
         name: nodejs
         state: present
@@ -16,12 +17,3 @@
       apt:
         name: npm
         state: present
-
-    - name: Verify Node.js installation
-      command: node -v
-      register: node_version
-      changed_when: false
-
-    - name: Show Node version
-      debug:
-        var: node_version.stdout
