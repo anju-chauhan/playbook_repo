@@ -1,0 +1,31 @@
+---
+- name: Install MongoDB on Ubuntu
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Import MongoDB public GPG key
+      apt_key:
+        url: https://pgp.mongodb.com/server-6.0.asc
+        state: present
+
+    - name: Create MongoDB list file
+      copy:
+        dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
+        content: |
+          deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/6.0 multiverse
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        state: present
+
+    - name: Start MongoDB
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
